@@ -1,0 +1,1357 @@
+definitions:
+  config.Config:
+    properties:
+      environment:
+        description: develop,staging,production
+        type: string
+      httpPort:
+        type: string
+      libraryServiceHost:
+        type: string
+      libraryServicePort:
+        type: integer
+      logLevel:
+        type: string
+      minioAccessKeyID:
+        type: string
+      minioBucketName:
+        type: string
+      minioEndpoint:
+        type: string
+      minioHost:
+        type: string
+      minioLocation:
+        type: string
+      minioSecretKey:
+        type: string
+    type: object
+  models.AllProBookList:
+    properties:
+      bk_authorname:
+        type: string
+      bk_id:
+        type: string
+      bk_name:
+        type: string
+      bk_numsbook:
+        type: integer
+      book_list_id:
+        type: integer
+      deadline:
+        type: string
+      given_date:
+        type: string
+      professor_id:
+        type: string
+      status:
+        type: string
+    type: object
+  models.AllStuBookList:
+    properties:
+      bk_authorname:
+        type: string
+      bk_id:
+        type: string
+      bk_name:
+        type: string
+      bk_numsbook:
+        type: integer
+      book_list_id:
+        type: integer
+      deadline:
+        type: string
+      given_date:
+        type: string
+      status:
+        type: string
+      student_id:
+        type: string
+    type: object
+  models.Book:
+    properties:
+      author_name:
+        type: string
+      book_id:
+        type: string
+      book_name:
+        type: string
+      nums_book:
+        default: 100
+        type: integer
+    type: object
+  models.GetAllBookResponse:
+    properties:
+      books:
+        items:
+          $ref: '#/definitions/models.Book'
+        type: array
+      count:
+        type: integer
+    type: object
+  models.GetAllProfessorLibraryResponse:
+    properties:
+      count:
+        type: integer
+      professor_library:
+        items:
+          $ref: '#/definitions/models.Professor'
+        type: array
+    type: object
+  models.GetAllProfessorResponse:
+    properties:
+      count:
+        type: integer
+      professors:
+        items:
+          $ref: '#/definitions/models.Professor'
+        type: array
+    type: object
+  models.GetAllStudentLibraryResponse:
+    properties:
+      count:
+        type: integer
+      student_library:
+        items:
+          $ref: '#/definitions/models.Student'
+        type: array
+    type: object
+  models.GetAllStudentResponse:
+    properties:
+      count:
+        type: integer
+      students:
+        items:
+          $ref: '#/definitions/models.Student'
+        type: array
+    type: object
+  models.GetProfessorLibraryInfo:
+    properties:
+      professor_library:
+        items:
+          $ref: '#/definitions/models.Professor'
+        type: array
+    type: object
+  models.GetStudentLibraryInfo:
+    properties:
+      student_library:
+        items:
+          $ref: '#/definitions/models.Student'
+        type: array
+    type: object
+  models.ProBookList:
+    properties:
+      bk_id:
+        type: string
+      deadline:
+        type: string
+      professor_id:
+        type: string
+    type: object
+  models.Professor:
+    properties:
+      all_booklist:
+        items:
+          $ref: '#/definitions/models.AllProBookList'
+        type: array
+      professor_firstname:
+        type: string
+      professor_id:
+        type: string
+      professor_lastname:
+        type: string
+      professor_phone1:
+        type: string
+      professor_phone2:
+        type: string
+    type: object
+  models.ResponseModel:
+    properties:
+      code:
+        type: integer
+      data: {}
+      error: {}
+      message:
+        type: string
+    type: object
+  models.StuBookList:
+    properties:
+      bk_id:
+        type: string
+      deadline:
+        type: string
+      student_id:
+        type: string
+    type: object
+  models.Student:
+    properties:
+      all_booklist:
+        items:
+          $ref: '#/definitions/models.AllStuBookList'
+        type: array
+      student_course:
+        type: integer
+      student_faculty:
+        type: string
+      student_firstname:
+        type: string
+      student_id:
+        type: string
+      student_lastname:
+        type: string
+      student_phone1:
+        type: string
+      student_phone2:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /config:
+    get:
+      consumes:
+      - application/json
+      description: shows config of the project only on the development phase
+      operationId: get-config
+      parameters:
+      - description: name
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/config.Config'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: gets project config
+      tags:
+      - config
+  /v1/book:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Book
+      operationId: delete-book
+      parameters:
+      - description: book_id
+        in: query
+        name: book_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: delete book
+      tags:
+      - book
+    get:
+      consumes:
+      - application/json
+      description: Get Book
+      operationId: get-book
+      parameters:
+      - description: book_id
+        in: query
+        name: book_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Book'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: get book
+      tags:
+      - book
+    post:
+      consumes:
+      - application/json
+      description: Create Book
+      operationId: create-book
+      parameters:
+      - description: book
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: create book
+      tags:
+      - book
+    put:
+      consumes:
+      - application/json
+      description: Update Book
+      operationId: update-book
+      parameters:
+      - description: book
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: update book
+      tags:
+      - book
+  /v1/books:
+    get:
+      consumes:
+      - application/json
+      description: Get Books
+      operationId: get-books
+      parameters:
+      - description: offset
+        in: query
+        name: offset
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      - description: book_name
+        in: query
+        name: book_name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.GetAllBookResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: get books
+      tags:
+      - book
+  /v1/ping:
+    get:
+      consumes:
+      - application/json
+      description: this returns "pong" messsage to show service is working
+      operationId: ping
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: returns "pong" message
+      tags:
+      - config
+  /v1/probooklist:
+    get:
+      consumes:
+      - application/json
+      description: Get Professor BookList
+      operationId: get-professor-booklist
+      parameters:
+      - description: professor_id
+        in: query
+        name: professor_id
+        type: string
+      - description: professor_firstname
+        in: query
+        name: professor_firstname
+        type: string
+      - description: professor_lastname
+        in: query
+        name: professor_lastname
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.GetProfessorLibraryInfo'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: get professor booklist
+      tags:
+      - professorbooklist
+    post:
+      consumes:
+      - application/json
+      description: Create Professor BookList
+      operationId: create-professor-booklist
+      parameters:
+      - description: probook_list
+        in: body
+        name: probook_list
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProBookList'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: create professor booklist
+      tags:
+      - professorbooklist
+    put:
+      consumes:
+      - application/json
+      description: Return ProBook
+      operationId: Return-probook
+      parameters:
+      - description: bk_id
+        in: query
+        name: bk_id
+        required: true
+        type: string
+      - description: probook_list_id
+        in: query
+        name: probook_list_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: Return probook
+      tags:
+      - professorbooklist
+  /v1/probooklists:
+    get:
+      consumes:
+      - application/json
+      description: Get Professor BookLists
+      operationId: get-professor-booklists
+      parameters:
+      - description: offset
+        in: query
+        name: offset
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.GetAllProfessorLibraryResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: get professor booklists
+      tags:
+      - professorbooklist
+  /v1/professor:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Professor
+      operationId: delete-professor
+      parameters:
+      - description: professor_id
+        in: query
+        name: professor_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: delete professor
+      tags:
+      - professor
+    get:
+      consumes:
+      - application/json
+      description: Get Professor
+      operationId: get-professor
+      parameters:
+      - description: professor_id
+        in: query
+        name: professor_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Professor'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: get professor
+      tags:
+      - professor
+    post:
+      consumes:
+      - application/json
+      description: Create Professor
+      operationId: create-professor
+      parameters:
+      - description: professor
+        in: body
+        name: professor
+        required: true
+        schema:
+          $ref: '#/definitions/models.Professor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: create professor
+      tags:
+      - professor
+    put:
+      consumes:
+      - application/json
+      description: Update Professor
+      operationId: update-professor
+      parameters:
+      - description: professor
+        in: body
+        name: professor
+        required: true
+        schema:
+          $ref: '#/definitions/models.Professor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: update professor
+      tags:
+      - professor
+  /v1/professors:
+    get:
+      consumes:
+      - application/json
+      description: Get Professors
+      operationId: get-professors
+      parameters:
+      - description: offset
+        in: query
+        name: offset
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.GetAllProfessorResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: get professors
+      tags:
+      - professor
+  /v1/stubooklist:
+    get:
+      consumes:
+      - application/json
+      description: Get Student BookList
+      operationId: get-student-booklist
+      parameters:
+      - description: student_id
+        in: query
+        name: student_id
+        type: string
+      - description: student_firstname
+        in: query
+        name: student_firstname
+        type: string
+      - description: student_lastname
+        in: query
+        name: student_lastname
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.GetStudentLibraryInfo'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: get student booklist
+      tags:
+      - studentbooklist
+    post:
+      consumes:
+      - application/json
+      description: Create Student BookList
+      operationId: create-student-booklist
+      parameters:
+      - description: stubook_list
+        in: body
+        name: stubook_list
+        required: true
+        schema:
+          $ref: '#/definitions/models.StuBookList'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: create student booklist
+      tags:
+      - studentbooklist
+    put:
+      consumes:
+      - application/json
+      description: Return Student BookList
+      operationId: return-student-booklist
+      parameters:
+      - description: bk_id
+        in: query
+        name: bk_id
+        required: true
+        type: string
+      - description: stubooklist_id
+        in: query
+        name: stubooklist_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: return student booklist
+      tags:
+      - studentbooklist
+  /v1/stubooklists:
+    get:
+      consumes:
+      - application/json
+      description: Get Student BookLists
+      operationId: get-student-booklists
+      parameters:
+      - description: offset
+        in: query
+        name: offset
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.GetAllStudentLibraryResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: get student booklists
+      tags:
+      - studentbooklist
+  /v1/student:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Student by given ID
+      operationId: delete_student
+      parameters:
+      - description: student_id
+        in: query
+        name: student_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: Delete Student
+      tags:
+      - student
+    get:
+      consumes:
+      - application/json
+      description: Get Student
+      operationId: get_student
+      parameters:
+      - description: student_id
+        in: query
+        name: student_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            type: Object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: Get Student
+      tags:
+      - student
+    post:
+      consumes:
+      - application/json
+      description: Create Student
+      operationId: create_student
+      parameters:
+      - description: student
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/models.Student'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: Create Student
+      tags:
+      - student
+    put:
+      consumes:
+      - application/json
+      description: Update Student by ID
+      operationId: update_student
+      parameters:
+      - description: student
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/models.Student'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: Update Student
+      tags:
+      - student
+  /v1/students:
+    get:
+      consumes:
+      - application/json
+      description: Get All Student
+      operationId: get_all_student
+      parameters:
+      - description: offset
+        in: query
+        name: offset
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.GetAllStudentResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ResponseModel'
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: Get All Student
+      tags:
+      - student
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

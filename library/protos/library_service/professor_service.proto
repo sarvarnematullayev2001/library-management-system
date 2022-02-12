@@ -1,0 +1,15 @@
+syntax="proto3";
+
+package genproto;
+option go_package="genproto/library_service";
+
+import "professor.proto";
+import "book.proto";
+
+service ProfessorService {
+	rpc Create(Professor) returns (Msg) {}
+    rpc Get(GetProfessor) returns (Professor) {}
+    rpc GetAll(GetAllProfessorRequest) returns (GetAllProfessorResponse) {}
+    rpc Update(Professor) returns (Msg) {}
+    rpc Delete(GetProfessor) returns (Msg) {}
+} 

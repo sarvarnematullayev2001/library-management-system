@@ -1,0 +1,14 @@
+syntax="proto3";
+
+package genproto;
+option go_package="genproto/library_service";
+
+import "stubook_list.proto";
+import "book.proto";
+
+service StuBookListService {
+	rpc Create(StuBookList) returns (Msg) {}
+	rpc GetAllStudent(GetAllStudentLibraryRequest) returns (GetAllStudentLibraryResponse) {}
+	rpc GetStudent(GetStudentLibrary) returns (GetStudentLibraryInfo) {}
+	rpc Return(ReturnBook) returns (Msg) {}
+}

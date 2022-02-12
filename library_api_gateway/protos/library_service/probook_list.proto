@@ -1,0 +1,47 @@
+syntax="proto3";
+
+package genproto;
+option go_package="genproto/library_service";
+
+import "professor.proto";
+
+message ProBookList {
+    string bk_id = 1;
+    string deadline = 2;
+    string professor_id = 3;
+}
+
+message ProBookListId {
+    uint32 booklist_id = 2;
+}
+
+message GetAllProBookListRequest{
+    string status=1;
+    string given_date = 2;
+    string deadline = 3;
+}
+
+message GetAllProBookListResponse{
+    uint32 count=1;
+    repeated AllProBookList book_list=2;
+}
+
+message GetAllProfessorLibraryRequest {
+    uint32 offset = 1;
+    uint32 limit = 2;
+}
+  
+message GetAllProfessorLibraryResponse {
+      repeated Professor professor_library = 1;
+      uint32 count = 2;
+}
+
+message GetProfessorLibrary {
+    string professor_id = 1;
+    string professor_firstname = 2;
+    string professor_lastname = 3;
+}
+
+message GetProfessorLibraryInfo {
+    repeated Professor professor_library = 1;
+}

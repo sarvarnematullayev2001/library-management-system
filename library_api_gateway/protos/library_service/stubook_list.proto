@@ -1,0 +1,52 @@
+syntax="proto3";
+
+package genproto;
+option go_package="genproto/library_service";
+
+import "student.proto";
+
+message StuBookList {
+    string bk_id = 1;
+    string deadline = 2;
+    string student_id = 3;
+}
+
+message StuBookListId {
+    uint32 booklist_id = 2;
+}
+
+message GetAllStuBookListRequest{
+    string status=1;
+    string given_date = 2;
+    string deadline = 3;
+}
+
+message GetAllStuBookListResponse{
+    uint32 count=1;
+    repeated AllStuBookList book_list=2;
+}
+
+message GetAllStudentLibraryRequest {
+    uint32 offset = 2;
+    uint32 limit = 3;
+}
+  
+message GetAllStudentLibraryResponse {
+      repeated Student student_library = 1;
+      uint32 count = 2;
+}
+
+message GetStudentLibrary {
+    string student_id = 1;
+    string student_firstname = 2;
+    string student_lastname = 3;
+}
+
+message GetStudentLibraryInfo {
+    repeated Student student_library = 1;
+}
+
+message ReturnBook {
+    string bk_id = 1;
+    uint32 booklist_id = 2;
+}

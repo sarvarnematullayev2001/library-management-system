@@ -1,0 +1,14 @@
+syntax="proto3";
+
+package genproto;
+option go_package="genproto/library_service";
+
+import "book.proto";
+
+service BookService {
+	rpc Create(Book) returns (Msg) {}
+	rpc Get(GetBook) returns (Book) {}
+	rpc GetAll(GetAllBookRequest) returns (GetAllBookResponse) {}
+	rpc Update(Book) returns (Msg) {}
+	rpc Delete(GetBook) returns (Msg) {}
+}

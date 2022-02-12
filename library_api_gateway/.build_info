@@ -1,0 +1,4 @@
+export APP=library_api_gateway
+export REGISTRY=gitlab.udevs.io:5050
+PROJECT_NAME=urecruit
+
